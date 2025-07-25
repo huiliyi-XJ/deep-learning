@@ -1,3 +1,7 @@
+import os
+
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 import torch
 
 # 打印pytorch版本
@@ -106,7 +110,7 @@ x_t = torch.Tensor(x).view(200, 1)
 y_t = model(x_t)
 y = y_t.data.numpy()
 plt.plot(x, y)
-plt.plot([0, 10], [0.5, 0.5], c="r")
+plt.plot([0, 10], [0.5, 0.5], c="red")
 plt.xlabel("Hours")
 plt.ylabel("Probability of Pass")
 plt.grid()
