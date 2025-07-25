@@ -40,9 +40,9 @@ dataset = TensorDataset(x_data, y_data)  # 输入形状需匹配(batch_size, fea
 from torch.utils.data import random_split
 
 # 定义划分比例
-train_ratio = 0.7
-val_ratio = 0.2
-test_ratio = 0.1
+train_ratio = 0.7  # 训练集占70%
+val_ratio = 0.2  # 验证集占20%
+test_ratio = 0.1  # 测试集占10%
 
 # 计算各子集样本数
 total_samples = len(dataset)
@@ -51,7 +51,7 @@ val_size = int(val_ratio * total_samples)
 test_size = total_samples - train_size - val_size
 
 # 使用random_split进行随机划分（确保可复现性）
-generator = torch.Generator().manual_seed(2023)  # 固定随机种子
+generator = torch.Generator().manual_seed(2025)  # 固定随机种子
 train_dataset, val_dataset, test_dataset = random_split(
     dataset, [train_size, val_size, test_size], generator=generator
 )
@@ -133,6 +133,7 @@ for epoch in range(100):
         early_stop_counter += 1
         if early_stop_counter >= 10:  # 连续10轮无改进则停止
             break
+
     print("epoch:", epoch, "batch:", "train_loss:", train_loss, "val_loss:", val_loss)
 
 
