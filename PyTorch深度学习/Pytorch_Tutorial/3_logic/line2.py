@@ -16,11 +16,14 @@ y_data = torch.Tensor([[2.0], [4.0], [6.0]])
 
 # 将原始数据封装为Dataset
 dataset = TensorDataset(x_data, y_data)  # 输入形状需匹配(batch_size, features)
+# 这个是把数据封装成一个类，然后可以进行批量处理，(x, y)对应好
 
 # 创建DataLoader并设置小批量参数
 batch_size = 2  # 每批样本数（可调超参数）
 shuffle = False  # 每个epoch是否打乱数据顺序
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+dataloader = DataLoader(
+    dataset, batch_size=batch_size, shuffle=shuffle
+)  # 每次加载batch_size个数据，也就是2个数据
 
 
 # 构建线性模型
@@ -66,7 +69,7 @@ model.parameters() 的功能是自动收集模型中所有需要优化的参数�
 SGD算法可以加入动量梯度下降来进行优化，这样越新的梯度用来更新的贡献就越大
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 """
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)  # 动量
 # optimizer = torch.optim.Adagrad(model.parameters(), lr=0.01)
 # optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 # optimizer = torch.optim.Adamax(model.parameters(), lr=0.01)
