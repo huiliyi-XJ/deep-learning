@@ -13,7 +13,7 @@ print("=== 高级版糖尿病预测模型 ===\n")
 
 # 1. 数据加载
 diabetes = load_diabetes()
-X = diabetes.data
+X = diabete
 y = diabetes.target
 
 print("原始数据信息:")
