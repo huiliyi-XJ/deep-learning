@@ -1,3 +1,7 @@
+import os
+
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 import torch
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
@@ -7,13 +11,13 @@ from sklearn.datasets import load_diabetes
 import numpy as np
 
 
-class DiabetesDataset():
+class DiabetesDataset:
     def __init__(self):
         # 加载糖尿病数据集
         diabetes = load_diabetes()
         # 提取特征矩阵和标签
-        X = diabetes .data  # 形状为 (N, 10) 的 NumPy 数组
-        y = diabetes .target  # 形状为 (N,) 的 NumPy 一维数组
+        X = diabetes.data  # 形状为 (N, 10) 的 NumPy 数组
+        y = diabetes.target  # 形状为 (N,) 的 NumPy 一维数组
         threshold = np.median(y)  # 使用中位数作为阈值（或自定义数值如150）
         y_binary = np.where(y > threshold, 1, 0).astype(np.float32)
         self.x_data = torch.from_numpy(X).float()  # 形状 [N, 10]
@@ -27,21 +31,23 @@ class DiabetesDataset():
         return self.len
 
 
+# 实例化数据集并且创建一个数据加载器 dataloader
 dataset = DiabetesDataset()
-train_loader = DataLoader(dataset, 
-                          batch_size=32, 
-                          shuffle=True,
-                          )
+train_loader = DataLoader(
+    dataset,
+    batch_size=32,
+    shuffle=True,
+)
 
 
 # 自定义模型结构
 class Model(torch.nn.Module):
     def __init__(self):
         super(Model, self).__init__()
-        self.linear1 = torch.nn.Linear(10,8)
-        self.linear2 = torch.nn.Linear(8,6)
-        self.linear3 = torch.nn.Linear(6,4)
-        self.linear4 = torch.nn.Linear(4,1)
+        self.linear1 = torch.nn.Linear(10, 8)
+        self.linear2 = torch.nn.Linear(8, 6)
+        self.linear3 = torch.nn.Linear(6, 4)
+        self.linear4 = torch.nn.Linear(4, 1)
         # self.activate = torch.nn.ReLU()
         self.sigmoid = torch.nn.Sigmoid()
 
@@ -52,9 +58,10 @@ class Model(torch.nn.Module):
         x = self.sigmoid(self.linear4(x))
         return x
 
+
 model = Model()
 
-criterion = torch.nn.BCELoss(reduction='sum')
+criterion = torch.nn.BCELoss(reduction="sum")
 
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 
@@ -72,4 +79,3 @@ for epoch in range(100):
         loss.backward()
         # 4、Update
         optimizer.step()
-
