@@ -9,8 +9,8 @@ batch_size = 64  # 每次处理64张图片
 transform = transforms.Compose(
     [
         transforms.ToTensor(),
-        # 用均值和标准差对图像进行归一化
-        transforms.Normalize((0.1307,), (0.3081,)),
+        # 把图像转换成张量
+        transforms.Normalize((0.1307,), (0.3081,)),  # 用均值和标准差进行标准化
     ]
 )
 
@@ -47,9 +47,11 @@ class Net(torch.nn.Module):
 model = Net()
 
 # 定义交叉熵损失
-criterion = torch.nn.CrossEntropyLoss()
+criterion = torch.nn.CrossEntropyLoss()  # 适用于多分类问题的 交叉熵损失函数
 # 定义优化器
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+optimizer = torch.optim.SGD(
+    model.parameters(), lr=0.01, momentum=0.9
+)  # momentum是动量参数，加速收敛
 
 
 def train(epoch):
@@ -65,7 +67,7 @@ def train(epoch):
         optimizer.step()
 
         running_loss += loss.item()
-        if batch_idx % 300 == 299:  # 每100个batch打印一次
+        if batch_idx % 300 == 299:  # 每300个batch打印一次
             print(
                 "[%d, %5d] loss: %.3f" % (epoch + 1, batch_idx + 1, running_loss / 300)
             )
